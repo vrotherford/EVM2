@@ -112,6 +112,21 @@ int Sum(std::vector<std::vector<int>> &matrix, std::vector<std::vector<int>> &pl
 	return sum;
 }
 
+int Sum(std::vector<std::vector<int>> &matrix, std::vector<std::vector<int>> &plateMatrix, int v, int i, int j)
+{
+	int sum = 0;
+	for (auto& n : matrix[v])
+	{
+		int iMatrix = &n - &matrix[v][0];
+		if (n != 0)
+		{
+			std::pair<int, int> indexOfV = ReturnIndex(iMatrix, plateMatrix);
+			sum += n * (abs(j - indexOfV.first) + abs(i - indexOfV.second));
+		}
+	}
+	return sum;
+}
+
 //Находим Q
 int Sum(std::vector<std::vector<int>> &matrix, std::vector<std::vector<int>> &plateMatrix)
 {
@@ -317,10 +332,9 @@ int main()
 				int j = &row - &plateMatrix[0];
 				for (auto& v : row)
 				{
-					excluded.push_back(v);
 					auto it = std::find(row.begin(), row.end(), v);
 					int i = std::distance(row.begin(), it);
-					lVi[v] = (double)Sum(matrix, plateMatrix, v, i, j, excluded) / sumVector[v];
+					lVi[v] = (double)Sum(matrix, plateMatrix, v, i, j) / sumVector[v];
 				}
 			}
 
